@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>二级下拉菜单示例</title>
+    <script src="./dropdown-menu.js.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+<dropdown-menu menu-data='[
+    {
+      "label": "菜单1",
+      "link": "/page1",
+      "children": [
+        {"label": "子菜单1-1", "link": "/page1-1"},
+        {"label": "子菜单1-2", "link": "/page1-2"}
+      ]
+    },
+    {
+      "label": "菜单2",
+      "link": "/page2"
+    },
+    {
+      "label": "菜单3",
+      "link": "/page3"
+    }
+  ]'></dropdown-menu>
+</body>
+</html>

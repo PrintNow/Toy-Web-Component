@@ -37,6 +37,7 @@ class DropdownMenu extends HTMLElement {
           border-radius: 4px;
           cursor: pointer;
           font-size: 14px;
+          padding: 4px 6px;
         }
 
         .dropdown-button:hover {
@@ -66,7 +67,7 @@ class DropdownMenu extends HTMLElement {
         .menu-item a {
           display: block;
           text-align: left;
-          padding: 6px 10px;
+          padding: 10px 6px;
           color: var(--text-color);
           text-decoration: none;
           font-size: 13px;

@@ -98,7 +98,9 @@ class DropdownMenu extends HTMLElement {
       </style>
 
       <div class="dropdown">
-        <button class="dropdown-button">菜单</button>
+        <button class="dropdown-button">
+          <slot name="trigger">菜单</slot>
+        </button>
         <div class="dropdown-menu">
           ${menuData.map(item => `
             <div class="menu-item">

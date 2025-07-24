@@ -104,11 +104,11 @@ class DropdownMenu extends HTMLElement {
         <div class="dropdown-menu">
           ${menuData.map(item => `
             <div class="menu-item">
-              <a href="${item.link || '#'}">${item.label}${item.children ? '<span class="arrow">▶</span>' : ''}</a>
+              <a target="_blank" href="${item.link || '#'}">${item.label}${item.children ? '<span class="arrow">▶</span>' : ''}</a>
               ${item.children ? `
                 <div class="submenu">
                   ${item.children.map(subItem => `
-                    <a href="${subItem.link || '#'}">${subItem.label}</a>
+                    <a target="_blank" href="${subItem.link || '#'}">${subItem.label}</a>
                   `).join('')}
                 </div>
               ` : ''}

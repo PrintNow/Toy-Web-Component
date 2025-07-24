@@ -81,7 +81,7 @@ class DropdownMenu extends HTMLElement {
           position: absolute;
           left: 100%;
           top: 0;
-          min-width: 200px;
+          min-width: 130px;
           background-color: var(--dropdown-bg);
           box-shadow: 0 2px 8px rgba(0,0,0,0.15);
           border-radius: 4px;

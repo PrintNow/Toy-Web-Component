@@ -31,7 +31,7 @@ class DropdownMenu extends HTMLElement {
         }
 
         .dropdown-button {
-          padding: 10px 20px;
+          /* padding: 10px 20px; */
           background-color: var(--primary-color);
           color: white;
           border: none;

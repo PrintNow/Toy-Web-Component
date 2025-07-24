@@ -73,7 +73,13 @@ class DropdownMenu extends HTMLElement {
           font-size: 13px;
         }
 
-        .menu-item a:hover {
+        .menu-item a.disabled {
+          cursor: not-allowed;
+          opacity: 0.6;
+          pointer-events: none;
+        }
+
+        .menu-item a:not(.disabled):hover {
           background-color: var(--hover-bg);
         }
 
@@ -105,11 +111,11 @@ class DropdownMenu extends HTMLElement {
         <div class="dropdown-menu">
           ${menuData.map(item => `
             <div class="menu-item">
-              <a target="_blank" href="${item.link || '#'}">${item.label}${item.children ? '<span class="arrow">▶</span>' : ''}</a>
+              <a target="_blank" class="${!item.link ? 'disabled' : ''}" href="${item.link || 'javascript:void(0)'}">${item.label}${item.children ? '<span class="arrow">▶</span>' : ''}</a>
               ${item.children ? `
                 <div class="submenu">
                   ${item.children.map(subItem => `
-                    <a target="_blank" href="${subItem.link || '#'}">${subItem.label}</a>
+                    <a target="_blank" class="${!subItem.link ? 'disabled' : ''}" href="${subItem.link || 'javascript:void(0)'}">${subItem.label}</a>
                   `).join('')}
                 </div>
               ` : ''}
@@ -123,9 +129,21 @@ class DropdownMenu extends HTMLElement {
   bindEvents() {
     const button = this.shadowRoot.querySelector('.dropdown-button');
     const menu = this.shadowRoot.querySelector('.dropdown-menu');
+    const trigger = button.querySelector('slot[name="trigger"]');
 
+    // 点击事件
     button.addEventListener('click', () => {
       menu.classList.toggle('active');
+    });
+
+    // 鼠标移入事件
+    button.addEventListener('mouseenter', () => {
+      menu.classList.add('active');
+    });
+
+    // 鼠标移出整个组件时关闭菜单
+    this.addEventListener('mouseleave', () => {
+      menu.classList.remove('active');
     });
 
     // 点击外部关闭菜单

@@ -4,17 +4,20 @@ class DropdownMenu extends HTMLElement {
     // 创建 Shadow DOM
     this.attachShadow({ mode: 'open' });
     
-    // 默认菜单数据
-    const menuData = JSON.parse(this.getAttribute('menu-data') || '[]');
+    // 初始化定时器ID
+    this.closeTimer = null;
     
     // 渲染组件
-    this.render(menuData);
+    this.render();
     
     // 绑定事件
     this.bindEvents();
   }
 
-  render(menuData) {
+  render() {
+    // 获取菜单数据
+    const menuData = JSON.parse(this.getAttribute('menu-data') || '[]');
+    
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -47,13 +50,24 @@ class DropdownMenu extends HTMLElement {
         .dropdown-menu {
           display: none;
           position: absolute;
-          top: 100%;
+          top: calc(100% + 5px);
           left: 0;
           min-width: 200px;
           background-color: var(--dropdown-bg);
           box-shadow: 0 2px 8px rgba(0,0,0,0.15);
           border-radius: 4px;
           z-index: 1000;
+          padding: 4px 0;
+        }
+
+        .dropdown-menu::before {
+          content: '';
+          position: absolute;
+          top: -10px;
+          left: 0;
+          width: 100%;
+          height: 10px;
+          background: transparent;
         }
 
         .dropdown-menu.active {
@@ -64,23 +78,30 @@ class DropdownMenu extends HTMLElement {
           position: relative;
         }
 
+        .menu-item:not(:last-child) {
+          border-bottom: 1px solid #eee;
+        }
+
         .menu-item a {
           display: block;
           text-align: left;
-          padding: 10px 6px;
+          padding: 10px 16px;
           color: var(--text-color);
           text-decoration: none;
           font-size: 13px;
+          transition: all 0.2s ease;
         }
 
         .menu-item a.disabled {
           cursor: not-allowed;
           opacity: 0.6;
           pointer-events: none;
+          color: #999;
         }
 
         .menu-item a:not(.disabled):hover {
           background-color: var(--hover-bg);
+          padding-left: 18px;
         }
 
         .submenu {
@@ -129,21 +150,29 @@ class DropdownMenu extends HTMLElement {
   bindEvents() {
     const button = this.shadowRoot.querySelector('.dropdown-button');
     const menu = this.shadowRoot.querySelector('.dropdown-menu');
-    const trigger = button.querySelector('slot[name="trigger"]');
+    const dropdown = this.shadowRoot.querySelector('.dropdown');
 
     // 点击事件
     button.addEventListener('click', () => {
       menu.classList.toggle('active');
     });
 
-    // 鼠标移入事件
-    button.addEventListener('mouseenter', () => {
+    // 鼠标移入下拉区域时展开菜单
+    dropdown.addEventListener('mouseenter', () => {
+      // 清除可能存在的关闭定时器
+      if (this.closeTimer) {
+        clearTimeout(this.closeTimer);
+        this.closeTimer = null;
+      }
       menu.classList.add('active');
     });
 
-    // 鼠标移出整个组件时关闭菜单
-    this.addEventListener('mouseleave', () => {
-      menu.classList.remove('active');
+    // 鼠标移出下拉区域时延迟关闭菜单
+    dropdown.addEventListener('mouseleave', () => {
+      // 设置200ms的延迟
+      this.closeTimer = setTimeout(() => {
+        menu.classList.remove('active');
+      }, 100);
     });
 
     // 点击外部关闭菜单
@@ -152,6 +181,14 @@ class DropdownMenu extends HTMLElement {
         menu.classList.remove('active');
       }
     });
+  }
+
+  // 组件移除时清理定时器
+  disconnectedCallback() {
+    if (this.closeTimer) {
+      clearTimeout(this.closeTimer);
+      this.closeTimer = null;
+    }
   }
 
   // 监听属性变化

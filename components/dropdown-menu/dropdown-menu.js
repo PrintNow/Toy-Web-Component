@@ -18,7 +18,7 @@ class DropdownMenu extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         :host {
-          --primary-color: #007bff;
+          --primary-color: #2b3138;
           --dropdown-bg: #fff;
           --text-color: #333;
           --hover-bg: #f8f9fa;
@@ -31,13 +31,12 @@ class DropdownMenu extends HTMLElement {
         }
 
         .dropdown-button {
-          /* padding: 10px 20px; */
           background-color: var(--primary-color);
           color: white;
           border: none;
           border-radius: 4px;
           cursor: pointer;
-          font-size: 16px;
+          font-size: 14px;
         }
 
         .dropdown-button:hover {
@@ -66,9 +65,11 @@ class DropdownMenu extends HTMLElement {
 
         .menu-item a {
           display: block;
-          padding: 10px 15px;
+          text-align: left;
+          padding: 6px 10px;
           color: var(--text-color);
           text-decoration: none;
+          font-size: 13px;
         }
 
         .menu-item a:hover {
